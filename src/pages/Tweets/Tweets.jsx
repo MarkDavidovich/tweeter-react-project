@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
-import style from "./Tweets.module.css";
+import { saveToLocalStorage, loadFromLocalStorage } from "../../lib/storage";
 import moment from "moment";
+import style from "./Tweets.module.css";
 
 const Tweets = () => {
-  const [tweets, setTweets] = useState([]);
+  const [tweets, setTweets] = useState(loadFromLocalStorage() || []);
   const [userName, setUserName] = useState("User");
 
-  //add tweet function will live here
+  useEffect(() => {
+    saveToLocalStorage(tweets);
+  }, [tweets]);
+
   const addTweet = (userText) => {
     const newTweet = {
       id: Date.now(),
@@ -16,6 +20,7 @@ const Tweets = () => {
       datePosted: moment().format("MMMM Do, h:mm A"),
       text: userText,
     };
+
     setTweets((prevTweets) => [...prevTweets, newTweet]);
   };
 

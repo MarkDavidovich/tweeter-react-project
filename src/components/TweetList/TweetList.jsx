@@ -6,7 +6,7 @@ const TweetList = ({ tweets }) => {
   //renders a list of tweets, automatically sorting them by newest
   return (
     <div className={style.container}>
-      {tweets.map((tweet) => (
+      {tweets?.map((tweet) => (
         <Tweet key={tweet.id} user={tweet.user} datePosted={tweet.datePosted} text={tweet.text} />
       ))}
     </div>
