@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 80%;
+  padding: 0.5rem;
+  margin-inline: auto;
+  margin-top: 3rem;
+  background-color: powderblue;
+}
+
+#input {
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 0.5rem;
+  background-color: powderblue;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.container > div {
+  flex: 1;
+  padding-inline: 0.5rem;
+}
+
+.container > button {
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.container > button:disabled {
+  cursor: default;
+}

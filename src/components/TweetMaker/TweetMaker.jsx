@@ -1,6 +1,35 @@
+import { useState } from "react";
 import style from "./TweetMaker.module.css";
 
 const TweetMaker = () => {
-  return <div>TweetMaker</div>;
+  //recieves user name and function to add new tweets
+  const [text, setText] = useState("");
+
+  const MAX_TWEET_LENGTH = 140;
+
+  return (
+    <form className={style.form}>
+      <textarea
+        id={style.input}
+        placeholder="What do you have in mind?"
+        value={text}
+        onChange={(ev) => {
+          setText(ev.target.value);
+        }}
+      />
+      <div className={style.container}>
+        <div>{text.length > MAX_TWEET_LENGTH ? "Can't contain more than 140 chars" : ""}</div>
+        <button
+          type="button"
+          onClick={() => {
+            console.log(text);
+          }}
+          disabled={text.length > MAX_TWEET_LENGTH}
+        >
+          Tweet
+        </button>
+      </div>
+    </form>
+  );
 };
 export default TweetMaker;
