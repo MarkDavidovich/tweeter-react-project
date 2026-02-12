@@ -9,14 +9,13 @@ const Tweets = () => {
   const [userName, setUserName] = useState("User");
 
   //add tweet function will live here
-  const addTweet = (userName, userText) => {
+  const addTweet = (userText) => {
     const newTweet = {
       id: Date.now(),
       user: userName,
       datePosted: moment().format("MMMM Do, h:mm A"),
       text: userText,
     };
-
     setTweets((prevTweets) => [...prevTweets, newTweet]);
   };
 

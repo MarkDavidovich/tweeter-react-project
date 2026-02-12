@@ -1,13 +1,13 @@
 import style from "./Tweet.module.css";
 
-const Tweet = () => {
+const Tweet = ({ user, datePosted, text }) => {
   return (
     <div className={style.container}>
       <div>
-        <p>Name</p>
-        <p>Date</p>
+        <p>{user}</p>
+        <p>{datePosted}</p>
       </div>
-      <p>tweet body</p>
+      <p>{text}</p>
     </div>
   );
 };
