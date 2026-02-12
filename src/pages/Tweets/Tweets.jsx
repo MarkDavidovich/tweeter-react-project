@@ -1,24 +1,40 @@
 import { useEffect, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
-import { saveToLocalStorage, loadFromLocalStorage } from "../../lib/storage";
+import TWEETS_API_URL from "../../lib/api";
 import moment from "moment";
 import style from "./Tweets.module.css";
 
 const Tweets = () => {
-  const [tweets, setTweets] = useState(loadFromLocalStorage() || []);
+  const [tweets, setTweets] = useState([]);
   const [userName, setUserName] = useState("User");
 
   useEffect(() => {
-    saveToLocalStorage(tweets);
-  }, [tweets]);
+    const fetchTweets = async () => {
+      const response = await fetch(TWEETS_API_URL);
+
+      if (!response.ok) {
+        throw new Error(`Failed to get posts! status: ${response.status}`);
+      }
+
+      const tweetsData = await response.json();
+
+      setTweets(tweetsData);
+    };
+
+    fetchTweets();
+  }, []);
+
+  const getCurrentISODate = () => {
+    const currentDate = new Date();
+    return currentDate.toISOString();
+  };
 
   const addTweet = (userText) => {
     const newTweet = {
-      id: Date.now(),
-      user: userName,
-      datePosted: moment().format("MMMM Do, h:mm A"),
-      text: userText,
+      content: userText,
+      userName: userName,
+      date: getCurrentISODate(),
     };
 
     setTweets((prevTweets) => [...prevTweets, newTweet]);

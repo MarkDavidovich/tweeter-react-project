@@ -7,12 +7,10 @@ const TweetList = ({ tweets }) => {
 
   const sortedTweets = tweets.sort((a, b) => b.id - a.id);
 
-  console.log(sortedTweets);
-
   return (
     <div className={style.container}>
       {sortedTweets?.map((tweet) => (
-        <Tweet key={tweet.id} user={tweet.user} datePosted={tweet.datePosted} text={tweet.text} />
+        <Tweet key={tweet.id} user={tweet.userName} datePosted={tweet.date} text={tweet.content} />
       ))}
     </div>
   );
