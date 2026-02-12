@@ -1,9 +1,12 @@
 import "./App.css";
+import Tweets from "./pages/Tweets/Tweets";
 
 function App() {
   return (
     <>
-      <div>I'm App</div>
+      <div>
+        <Tweets />
+      </div>
     </>
   );
 }
