@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
 import TWEETS_API_URL from "../../lib/api";
 import { getCurrentISODate } from "../../lib/utils";
 import style from "./Tweets.module.css";
+import Popup from "../../components/Popup/Popup";
 
 const Tweets = () => {
   const [tweets, setTweets] = useState([]);
   const [userName, setUserName] = useState("fullstack_mark");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [popupContext, setPopupContext] = useState(null); //{ message: "message", isError: false }
+
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchTweets = async () => {
@@ -35,6 +39,26 @@ const Tweets = () => {
 
     fetchTweets();
   }, []);
+
+  useEffect(() => {
+    if (!popupContext) {
+      return;
+    }
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setPopupContext(null);
+    }, 2000);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [popupContext]);
 
   const postTweet = async (tweetText) => {
     setLoading(true);
@@ -67,13 +91,20 @@ const Tweets = () => {
     }
   };
 
-  //TODO: need to display the error to the user by a small window that pops out of the corner, need to make a component for that.
   //TODO? need to show a better loader?
-
+  //TODO change all errors to popup errors etc
   return (
     <div className={style.container}>
+      <button
+        onClick={() => {
+          setPopupContext({ message: "boop", isError: false });
+        }}
+      >
+        snackbar test
+      </button>
       <TweetMaker onAddTweet={postTweet} loading={loading} />
       {loading ? `Loading...` : <TweetList tweets={tweets} />}
+      <Popup message={popupContext?.message} isError={popupContext?.isError} onClosePopup={() => setPopupContext(null)} />
     </div>
   );
 };

@@ -1,0 +1,18 @@
+.container {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: darkcyan;
+  padding: 1rem;
+  /* width: 50%; */
+  transition: display 4s ease-in-out 1s;
+}
+
+.visible {
+  display: block;
+}
+
+.error {
+  background-color: peru;
+}
