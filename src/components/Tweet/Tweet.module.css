@@ -1,0 +1,15 @@
+.container {
+  padding: 1rem;
+  background-color: powderblue;
+}
+
+.container > div {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+}
+
+.container > div > p {
+  font-size: 12px;
+  color: gray;
+}
