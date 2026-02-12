@@ -4,3 +4,7 @@
   box-sizing: border-box;
   font-family: "JetBrains Mono", monospace;
 }
+
+body {
+  background-color: cornsilk;
+}
