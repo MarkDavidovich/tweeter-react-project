@@ -18,7 +18,7 @@ const TweetMaker = () => {
         }}
       />
       <div className={style.container}>
-        <div>{text.length > MAX_TWEET_LENGTH ? "Can't contain more than 140 chars" : ""}</div>
+        <div>{text.length > MAX_TWEET_LENGTH ? "Tweet can't contain more than 140 chars" : ""}</div>
         <button
           type="button"
           onClick={() => {
