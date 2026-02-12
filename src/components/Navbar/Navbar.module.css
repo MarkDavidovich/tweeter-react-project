@@ -1,0 +1,22 @@
+.container {
+  width: 100%;
+  background-color: powderblue;
+}
+
+.container > ul {
+  list-style: none;
+  width: 40%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.container > ul > li {
+  padding: 0.5rem;
+}
+
+.container > ul > li:hover {
+  background-color: cornsilk;
+}
