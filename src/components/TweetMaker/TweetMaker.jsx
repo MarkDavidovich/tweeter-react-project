@@ -1,7 +1,7 @@
 import { useState } from "react";
 import style from "./TweetMaker.module.css";
 
-const TweetMaker = () => {
+const TweetMaker = ({ onAddTweet, user }) => {
   //recieves user name and function to add new tweets
   const [text, setText] = useState("");
 
@@ -22,9 +22,9 @@ const TweetMaker = () => {
         <button
           type="button"
           onClick={() => {
-            console.log(text);
+            onAddTweet(user, text);
           }}
-          disabled={text.length > MAX_TWEET_LENGTH}
+          disabled={text.length > MAX_TWEET_LENGTH || text.length === 0}
         >
           Tweet
         </button>
