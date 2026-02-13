@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav className={style.container}>
       <div>
-        <NavLink className={({ isActive }) => `${isActive && style.active}`} to="/">
+        <NavLink className={({ isActive }) => `${isActive && style.active}`} to="/tweeter-react-project/">
           Home
         </NavLink>
         <NavLink className={({ isActive }) => `${isActive && style.active}`} to="/Profile">
