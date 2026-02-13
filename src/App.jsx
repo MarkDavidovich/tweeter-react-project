@@ -1,5 +1,5 @@
-import { NavLink, Routes, Route } from "react-router";
-import "./App.css";
+import { Routes, Route } from "react-router";
+import style from "./App.module.css";
 import Navbar from "./components/Navbar/Navbar";
 import Tweets from "./pages/Tweets/Tweets";
 import Profile from "./pages/Profile/Profile";
@@ -14,13 +14,11 @@ function App() {
 
   return (
     <>
-      <div>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Tweets userName={userName} />} />
-          <Route path="/Profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
-        </Routes>
-      </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Tweets userName={userName} />} />
+        <Route path="/Profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
+      </Routes>
     </>
   );
 }
