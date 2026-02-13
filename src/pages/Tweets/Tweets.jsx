@@ -35,7 +35,7 @@ const Tweets = ({ userName, onAlert }) => {
     fetchTweets();
   }, []);
 
-  const postTweet = async (tweetText) => {
+  const handlePostTweet = async (tweetText) => {
     setIsPosting(true);
 
     try {
@@ -66,10 +66,15 @@ const Tweets = ({ userName, onAlert }) => {
     }
   };
 
+  const ctxValue = {
+    tweets: tweets,
+    postTweet: handlePostTweet,
+  };
+
   return (
-    <TweetsContext.Provider value={tweets}>
+    <TweetsContext.Provider value={ctxValue}>
       <div className={style.container}>
-        <TweetMaker onAddTweet={postTweet} loading={isPosting} />
+        <TweetMaker loading={isPosting} />
         {isFetching ? (
           <div>
             <div className={style.loader}></div>

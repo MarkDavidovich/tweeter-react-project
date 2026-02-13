@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { TweetsContext } from "../../store/tweets-context";
 import style from "./TweetMaker.module.css";
 
-const TweetMaker = ({ onAddTweet, loading }) => {
+const TweetMaker = ({ loading }) => {
   const [text, setText] = useState("");
 
   const MAX_TWEET_LENGTH = 140;
+  const { postTweet } = useContext(TweetsContext);
 
   return (
     <form className={style.form}>
@@ -21,7 +23,7 @@ const TweetMaker = ({ onAddTweet, loading }) => {
         <button
           type="button"
           onClick={() => {
-            onAddTweet(text);
+            postTweet(text);
             setText("");
           }}
           disabled={text.length > MAX_TWEET_LENGTH || text.length === 0 || loading}
