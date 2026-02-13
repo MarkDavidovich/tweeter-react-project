@@ -9,31 +9,30 @@ import Popup from "../../components/Popup/Popup";
 const Tweets = () => {
   const [tweets, setTweets] = useState([]);
   const [userName, setUserName] = useState("fullstack_mark");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
   const [popupContext, setPopupContext] = useState(null); //{ message: "message", isError: false }
 
   const timeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchTweets = async () => {
-      setLoading(true);
-      setError(null);
+      setIsFetching(true);
 
       try {
         const response = await fetch(TWEETS_API_URL);
 
         if (!response.ok) {
-          setError(`Failed to get Tweets! status: ${response.status}`);
+          throw new Error(`Failed to load Tweets! status: ${response.status}`);
         }
 
         const tweetsData = await response.json();
 
         setTweets(tweetsData);
       } catch (err) {
-        setError(`Error: ${err.message}`);
+        setPopupContext({ message: `Error: ${err.message}`, isError: true });
       } finally {
-        setLoading(false);
+        setIsFetching(false);
       }
     };
 
@@ -61,8 +60,7 @@ const Tweets = () => {
   }, [popupContext]);
 
   const postTweet = async (tweetText) => {
-    setLoading(true);
-    setError(null);
+    setIsPosting(true);
 
     try {
       const response = await fetch(TWEETS_API_URL, {
@@ -78,32 +76,26 @@ const Tweets = () => {
       });
 
       if (!response.ok) {
-        setError(`Failed to post tweet! status: ${response.status}`);
+        throw new Error(`Failed to post Tweet! status: ${response.status}`);
       }
 
       const createdTweet = await response.json();
 
       setTweets((prevTweets) => [...prevTweets, createdTweet]);
+      setPopupContext({ message: `Tweet posted!`, isError: false });
     } catch (err) {
-      setError(`Error: ${err.message}`);
+      setPopupContext({ message: `Error: ${err.message}`, isError: true });
     } finally {
-      setLoading(false);
+      setIsPosting(false);
     }
   };
 
   //TODO? need to show a better loader?
-  //TODO change all errors to popup errors etc
+
   return (
     <div className={style.container}>
-      <button
-        onClick={() => {
-          setPopupContext({ message: "boop", isError: false });
-        }}
-      >
-        snackbar test
-      </button>
-      <TweetMaker onAddTweet={postTweet} loading={loading} />
-      {loading ? `Loading...` : <TweetList tweets={tweets} />}
+      <TweetMaker onAddTweet={postTweet} loading={isPosting} />
+      {isFetching ? `Loading...` : <TweetList tweets={tweets} />}
       <Popup message={popupContext?.message} isError={popupContext?.isError} onClosePopup={() => setPopupContext(null)} />
     </div>
   );
