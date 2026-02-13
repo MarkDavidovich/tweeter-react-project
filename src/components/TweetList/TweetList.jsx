@@ -6,7 +6,7 @@ import style from "./TweetList.module.css";
 const TweetList = () => {
   const { tweets } = useContext(TweetsContext);
 
-  const sortedTweets = tweets.sort();
+  const sortedTweets = tweets.sort((a, b) => b.id - a.id);
 
   return (
     <div className={style.container}>
