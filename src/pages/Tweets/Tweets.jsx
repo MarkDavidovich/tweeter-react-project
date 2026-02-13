@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
 import TWEETS_API_URL from "../../lib/api";
@@ -6,13 +6,10 @@ import { getCurrentISODate } from "../../lib/utils";
 import style from "./Tweets.module.css";
 import Popup from "../../components/Popup/Popup";
 
-const Tweets = ({ userName }) => {
+const Tweets = ({ userName, handleTweetPopups }) => {
   const [tweets, setTweets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
-  const [popupContext, setPopupContext] = useState(null); //{ message: "message", isError: false }
-
-  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchTweets = async () => {
@@ -29,7 +26,7 @@ const Tweets = ({ userName }) => {
 
         setTweets(tweetsData);
       } catch (err) {
-        setPopupContext({ message: `Error: ${err.message}`, isError: true });
+        handleTweetPopups(`Error: ${err.message}`, true);
       } finally {
         setIsFetching(false);
       }
@@ -37,26 +34,6 @@ const Tweets = ({ userName }) => {
 
     fetchTweets();
   }, []);
-
-  useEffect(() => {
-    if (!popupContext) {
-      return;
-    }
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      setPopupContext(null);
-    }, 2000);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [popupContext]);
 
   const postTweet = async (tweetText) => {
     setIsPosting(true);
@@ -81,21 +58,24 @@ const Tweets = ({ userName }) => {
       const createdTweet = await response.json();
 
       setTweets((prevTweets) => [...prevTweets, createdTweet]);
-      setPopupContext({ message: `Tweet posted!`, isError: false });
+      handleTweetPopups(`Tweet posted!`, false);
     } catch (err) {
-      setPopupContext({ message: `Error: ${err.message}`, isError: true });
+      setPopupContext(`Error: ${err.message}`, true);
     } finally {
       setIsPosting(false);
     }
   };
 
-  //TODO? need to show a better loader?
-
   return (
     <div className={style.container}>
       <TweetMaker onAddTweet={postTweet} loading={isPosting} />
-      {isFetching ? `Loading...` : <TweetList tweets={tweets} />}
-      <Popup message={popupContext?.message} isError={popupContext?.isError} onClosePopup={() => setPopupContext(null)} />
+      {isFetching ? (
+        <div>
+          <div className={style.loader}></div>
+        </div>
+      ) : (
+        <TweetList tweets={tweets} />
+      )}
     </div>
   );
 };
