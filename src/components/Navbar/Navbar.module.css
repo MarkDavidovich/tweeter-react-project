@@ -1,9 +1,10 @@
 .container {
   width: 100%;
   background-color: powderblue;
+  padding-top: 0.5rem;
 }
 
-.container > ul {
+.container > div {
   list-style: none;
   width: 40%;
   margin: auto;
@@ -13,10 +14,12 @@
   gap: 1rem;
 }
 
-.container > ul > li {
+.container > div > a {
   padding: 0.5rem;
+  text-decoration: none;
+  color: black;
 }
 
-.container > ul > li:hover {
+.container > div > a:hover {
   background-color: cornsilk;
 }

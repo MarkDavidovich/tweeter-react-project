@@ -1,12 +1,9 @@
 import style from "./Navbar.module.css";
 
-const Navbar = () => {
+const Navbar = ({ children }) => {
   return (
     <nav className={style.container}>
-      <ul>
-        <li>Home</li>
-        <li>User</li>
-      </ul>
+      <div>{children}</div>
     </nav>
   );
 };
