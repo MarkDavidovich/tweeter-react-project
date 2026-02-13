@@ -21,7 +21,6 @@ const Tweets = ({ userName, onAlert }) => {
         if (!response.ok) {
           throw new Error(`Failed to load Tweets! status: ${response.status}`);
         }
-
         const tweetsData = await response.json();
 
         setTweets(tweetsData);
@@ -33,6 +32,9 @@ const Tweets = ({ userName, onAlert }) => {
     };
 
     fetchTweets();
+    const intervalId = setInterval(fetchTweets, 10000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handlePostTweet = async (tweetText) => {
@@ -54,13 +56,12 @@ const Tweets = ({ userName, onAlert }) => {
       if (!response.ok) {
         throw new Error(`Failed to post Tweet! status: ${response.status}`);
       }
-
       const createdTweet = await response.json();
 
       setTweets((prevTweets) => [...prevTweets, createdTweet]);
       onAlert(`Tweet posted!`, false);
     } catch (err) {
-      setPopupContext(`Error: ${err.message}`, true);
+      onAlert(`Error: ${err.message}`, true);
     } finally {
       setIsPosting(false);
     }
@@ -75,7 +76,7 @@ const Tweets = ({ userName, onAlert }) => {
     <TweetsContext.Provider value={ctxValue}>
       <div className={style.container}>
         <TweetMaker loading={isPosting} />
-        {isFetching ? (
+        {isFetching && tweets.length === 0 ? (
           <div>
             <div className={style.loader}></div>
           </div>
