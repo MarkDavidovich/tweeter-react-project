@@ -3,18 +3,22 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Tweets from "./pages/Tweets/Tweets";
 import Profile from "./pages/Profile/Profile";
+import { useState } from "react";
 
 function App() {
+  const [userName, setUserName] = useState("fullstack_mark");
+
+  const handleUserNameChange = (newUserName) => {
+    setUserName(newUserName);
+  };
+
   return (
     <>
       <div>
-        <Navbar>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/Profile">Profile</NavLink>
-        </Navbar>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Tweets />} />
-          <Route path="/Profile" element={<Profile />} />
+          <Route path="/" element={<Tweets userName={userName} />} />
+          <Route path="/Profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
         </Routes>
       </div>
     </>

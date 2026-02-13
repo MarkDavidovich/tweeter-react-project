@@ -6,9 +6,8 @@ import { getCurrentISODate } from "../../lib/utils";
 import style from "./Tweets.module.css";
 import Popup from "../../components/Popup/Popup";
 
-const Tweets = () => {
+const Tweets = ({ userName }) => {
   const [tweets, setTweets] = useState([]);
-  const [userName, setUserName] = useState("fullstack_mark");
   const [isFetching, setIsFetching] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
   const [popupContext, setPopupContext] = useState(null); //{ message: "message", isError: false }

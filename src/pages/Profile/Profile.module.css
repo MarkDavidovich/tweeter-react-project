@@ -19,9 +19,12 @@
 
 .container > div > input {
   padding-inline: 0.5rem;
+  margin-bottom: 0.5rem;
   background-color: powderblue;
   border: none;
   outline: none;
+  border-bottom: 2px solid cornsilk;
+  font-size: 1.2rem;
 }
 
 .container > div > button {
@@ -31,4 +34,8 @@
   background-color: #fff;
   place-self: flex-end;
   cursor: pointer;
+}
+
+.container > div > button:disabled {
+  cursor: default;
 }
