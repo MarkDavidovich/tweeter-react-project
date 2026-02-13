@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
-import TWEETS_API_URL from "../../lib/api";
 import { getCurrentISODate } from "../../lib/utils";
 import style from "./Tweets.module.css";
 import { TweetsContext } from "../../store/tweets-context";
+import { supabase } from "../../lib/supabase";
 
 const Tweets = ({ userName, onAlert }) => {
   const [tweets, setTweets] = useState([]);
@@ -16,14 +16,14 @@ const Tweets = ({ userName, onAlert }) => {
       setIsFetching(true);
 
       try {
-        const response = await fetch(TWEETS_API_URL);
+        const { data, error } = await supabase.from("tweets").select("*");
 
-        if (!response.ok) {
-          throw new Error(`Failed to load Tweets! status: ${response.status}`);
+        if (error) {
+          onAlert(`Failed to load Tweets! ${error.message}`, true);
+          return;
         }
-        const tweetsData = await response.json();
 
-        setTweets(tweetsData);
+        setTweets(data);
       } catch (err) {
         onAlert(`Error: ${err.message}`, true);
       } finally {
@@ -41,24 +41,23 @@ const Tweets = ({ userName, onAlert }) => {
     setIsPosting(true);
 
     try {
-      const response = await fetch(TWEETS_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: tweetText,
-          userName: userName,
-          date: getCurrentISODate(),
-        }),
-      });
+      const { data, error } = await supabase
+        .from("tweets")
+        .insert([
+          {
+            user_name: userName,
+            content: tweetText,
+            date: getCurrentISODate(),
+          },
+        ])
+        .select();
 
-      if (!response.ok) {
-        throw new Error(`Failed to post Tweet! status: ${response.status}`);
+      if (error) {
+        onAlert(`Failed to load Tweets! ${error.message}`, true);
+        return;
       }
-      const createdTweet = await response.json();
 
-      setTweets((prevTweets) => [...prevTweets, createdTweet]);
+      setTweets((prevTweets) => [data[0], ...prevTweets]);
       onAlert(`Tweet posted!`, false);
     } catch (err) {
       onAlert(`Error: ${err.message}`, true);

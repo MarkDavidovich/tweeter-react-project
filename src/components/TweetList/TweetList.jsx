@@ -6,12 +6,12 @@ import style from "./TweetList.module.css";
 const TweetList = () => {
   const { tweets } = useContext(TweetsContext);
 
-  const sortedTweets = tweets.sort((a, b) => b.id - a.id);
+  const sortedTweets = tweets.sort();
 
   return (
     <div className={style.container}>
       {sortedTweets?.map((tweet) => (
-        <Tweet key={tweet.id} user={tweet.userName} datePosted={tweet.date} text={tweet.content} />
+        <Tweet key={tweet.id} user={tweet.user_name} datePosted={tweet.date} text={tweet.content} />
       ))}
     </div>
   );
