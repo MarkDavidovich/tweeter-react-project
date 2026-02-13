@@ -6,7 +6,7 @@ import { getCurrentISODate } from "../../lib/utils";
 import style from "./Tweets.module.css";
 import Popup from "../../components/Popup/Popup";
 
-const Tweets = ({ userName, handleTweetPopups }) => {
+const Tweets = ({ userName, onAlert }) => {
   const [tweets, setTweets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
@@ -26,7 +26,7 @@ const Tweets = ({ userName, handleTweetPopups }) => {
 
         setTweets(tweetsData);
       } catch (err) {
-        handleTweetPopups(`Error: ${err.message}`, true);
+        onAlert(`Error: ${err.message}`, true);
       } finally {
         setIsFetching(false);
       }
@@ -58,7 +58,7 @@ const Tweets = ({ userName, handleTweetPopups }) => {
       const createdTweet = await response.json();
 
       setTweets((prevTweets) => [...prevTweets, createdTweet]);
-      handleTweetPopups(`Tweet posted!`, false);
+      onAlert(`Tweet posted!`, false);
     } catch (err) {
       setPopupContext(`Error: ${err.message}`, true);
     } finally {

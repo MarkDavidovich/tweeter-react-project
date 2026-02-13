@@ -9,7 +9,7 @@ import Popup from "./components/Popup/Popup";
 
 function App() {
   const [userName, setUserName] = useState(loadFromLocalStorage() || "fullstack_mark");
-  const [popupContext, setPopupContext] = useState(null);
+  const [alert, setAlert] = useState(null);
 
   const timeoutRef = useRef(null);
 
@@ -18,7 +18,7 @@ function App() {
   }, [userName]);
 
   useEffect(() => {
-    if (!popupContext) {
+    if (!alert) {
       return;
     }
 
@@ -27,7 +27,7 @@ function App() {
     }
 
     timeoutRef.current = setTimeout(() => {
-      setPopupContext(null);
+      setAlert(null);
     }, 2000);
 
     return () => {
@@ -35,25 +35,25 @@ function App() {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [popupContext]);
+  }, [alert]);
 
   const handleUserNameChange = (newUserName) => {
-    setPopupContext({ message: `Username changed successfuly!`, isError: false });
+    setAlert({ message: `Username changed successfuly!`, isError: false });
     setUserName(newUserName);
   };
 
-  const handleTweetPopups = (message, isError) => {
-    setPopupContext({ message, isError });
+  const handleAlert = (message, isError) => {
+    setAlert({ message, isError });
   };
 
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Tweets userName={userName} onTweetPopups={handleTweetPopups} />} />
+        <Route path="/" element={<Tweets userName={userName} onAlert={handleAlert} />} />
         <Route path="/Profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
       </Routes>
-      <Popup message={popupContext?.message} isError={popupContext?.isError} />
+      {alert && <Popup message={alert.message} isError={alert.isError} />}
     </>
   );
 }
