@@ -5,7 +5,7 @@ import Tweets from "./pages/Tweets/Tweets";
 import Profile from "./pages/Profile/Profile";
 import Popup from "./components/Popup/Popup";
 import { saveToLocalStorage, loadFromLocalStorage } from "./lib/storage";
-import style from "./App.module.css";
+import "./App.css";
 
 function App() {
   const [userName, setUserName] = useState(loadFromLocalStorage() || "fullstack_mark");
