@@ -11,7 +11,7 @@ const TweetList = () => {
   return (
     <div className={style.container}>
       {sortedTweets?.map((tweet) => (
-        <Tweet key={tweet.id} user={tweet.user_name} datePosted={tweet.date} text={tweet.content} />
+        <Tweet key={tweet.id} user={tweet.userName} datePosted={tweet.date} text={tweet.content} />
       ))}
     </div>
   );
