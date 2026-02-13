@@ -1,9 +1,10 @@
 import Tweet from "./../Tweet/Tweet";
+import { TweetsContext } from "../../store/tweets-context";
+import { useContext } from "react";
 import style from "./TweetList.module.css";
 
-const TweetList = ({ tweets }) => {
-  //recieves the tweets array
-  //renders a list of tweets, automatically sorting them by newest
+const TweetList = () => {
+  const tweets = useContext(TweetsContext);
 
   const sortedTweets = tweets.sort((a, b) => b.id - a.id);
 

@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router";
-import style from "./App.module.css";
+import { useEffect, useState, useRef } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Tweets from "./pages/Tweets/Tweets";
 import Profile from "./pages/Profile/Profile";
-import { useEffect, useState, useRef } from "react";
-import { saveToLocalStorage, loadFromLocalStorage } from "./lib/storage";
 import Popup from "./components/Popup/Popup";
+import { saveToLocalStorage, loadFromLocalStorage } from "./lib/storage";
+import style from "./App.module.css";
 
 function App() {
   const [userName, setUserName] = useState(loadFromLocalStorage() || "fullstack_mark");

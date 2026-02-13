@@ -4,7 +4,7 @@ import TweetMaker from "../../components/TweetMaker/TweetMaker";
 import TWEETS_API_URL from "../../lib/api";
 import { getCurrentISODate } from "../../lib/utils";
 import style from "./Tweets.module.css";
-import Popup from "../../components/Popup/Popup";
+import { TweetsContext } from "../../store/tweets-context";
 
 const Tweets = ({ userName, onAlert }) => {
   const [tweets, setTweets] = useState([]);
@@ -67,16 +67,18 @@ const Tweets = ({ userName, onAlert }) => {
   };
 
   return (
-    <div className={style.container}>
-      <TweetMaker onAddTweet={postTweet} loading={isPosting} />
-      {isFetching ? (
-        <div>
-          <div className={style.loader}></div>
-        </div>
-      ) : (
-        <TweetList tweets={tweets} />
-      )}
-    </div>
+    <TweetsContext.Provider value={tweets}>
+      <div className={style.container}>
+        <TweetMaker onAddTweet={postTweet} loading={isPosting} />
+        {isFetching ? (
+          <div>
+            <div className={style.loader}></div>
+          </div>
+        ) : (
+          <TweetList />
+        )}
+      </div>
+    </TweetsContext.Provider>
   );
 };
 

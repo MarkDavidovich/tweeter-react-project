@@ -2,7 +2,6 @@ import { useState } from "react";
 import style from "./TweetMaker.module.css";
 
 const TweetMaker = ({ onAddTweet, loading }) => {
-  //recieves user name and function to add new tweets
   const [text, setText] = useState("");
 
   const MAX_TWEET_LENGTH = 140;
