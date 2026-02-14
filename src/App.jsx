@@ -6,6 +6,7 @@ import Profile from "./pages/Profile/Profile";
 import Popup from "./components/Popup/Popup";
 import { saveToLocalStorage, loadFromLocalStorage } from "./lib/storage";
 import "./App.css";
+import Login from "./pages/Login/Login";
 
 function App() {
   const [userName, setUserName] = useState(loadFromLocalStorage() || "fullstack_mark");
@@ -28,7 +29,7 @@ function App() {
 
     timeoutRef.current = setTimeout(() => {
       setAlert(null);
-    }, 2000);
+    }, 2500);
 
     return () => {
       if (timeoutRef.current) {
@@ -51,7 +52,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/tweeter-react-project/" element={<Tweets userName={userName} onAlert={handleAlert} />} />
-        <Route path="/Profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
+        <Route path="/profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       {alert && <Popup message={alert.message} isError={alert.isError} />}
     </>
