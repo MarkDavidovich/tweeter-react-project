@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
 import { getCurrentISODate } from "../../lib/utils";
-import style from "./Tweets.module.css";
 import { TweetsContext } from "../../store/tweets-context";
 import { supabase } from "../../lib/supabase";
+import style from "./Tweets.module.css";
 
 const Tweets = ({ userName, onAlert }) => {
   const [tweets, setTweets] = useState([]);

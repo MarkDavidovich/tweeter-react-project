@@ -7,10 +7,12 @@ import Popup from "./components/Popup/Popup";
 import { saveToLocalStorage, loadFromLocalStorage } from "./lib/storage";
 import "./App.css";
 import Login from "./pages/Login/Login";
+import { supabase } from "./lib/supabase";
 
 function App() {
   const [userName, setUserName] = useState(loadFromLocalStorage() || "fullstack_mark");
   const [alert, setAlert] = useState(null);
+  const [loggedOnUser, setLoggedOnUser] = useState(null);
 
   const timeoutRef = useRef(null);
 
@@ -43,17 +45,33 @@ function App() {
     setUserName(newUserName);
   };
 
+  const handleLoggedOnUser = (user) => {
+    setLoggedOnUser(user);
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      setLoggedOnUser(null);
+
+      console.log(`logged out!`);
+      setAlert({ message: `Logged out successfully!`, isError: false });
+    } catch (err) {
+      setAlert({ message: `Failed to log out! ${err.message}`, isError: true });
+    }
+  };
+
   const handleAlert = (message, isError) => {
     setAlert({ message, isError });
   };
 
   return (
     <>
-      <Navbar />
+      <Navbar onLogOut={handleLogOut} loggedOnUser={loggedOnUser} />
       <Routes>
         <Route path="/" element={<Tweets userName={userName} onAlert={handleAlert} />} />
         <Route path="/profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
-        <Route path="/login" element={<Login onAlert={handleAlert} />} />
+        <Route path="/login" element={<Login onAlert={handleAlert} onLoggedOnUser={handleLoggedOnUser} />} />
       </Routes>
       {alert && <Popup message={alert.message} isError={alert.isError} />}
     </>

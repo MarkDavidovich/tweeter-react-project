@@ -16,21 +16,12 @@
   padding-top: 0.5rem;
 }
 
-.container > div > div:last-of-type {
-  flex-direction: row;
-  padding-top: 0.5rem;
-  align-items: center;
-}
-
-.container > div > div:last-of-type > div {
-  flex: 1;
-}
-
 .container > div > div:last-of-type > button {
   background-color: white;
   border: none;
   cursor: pointer;
   padding: 0.5rem;
+  place-self: flex-end;
 }
 
 .container > div > div:last-of-type > button:disabled {
@@ -49,13 +40,12 @@
 
 .password {
   display: flex;
-
   border-bottom: 2px solid cornsilk;
 }
 
 .password > input {
-  flex: 1;
   border: none;
+  width: 100%;
 }
 
 .password > button {

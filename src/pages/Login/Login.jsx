@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 import style from "./Login.module.css";
 
-const Login = ({ onAlert }) => {
+const Login = ({ onAlert, onLoggedOnUser }) => {
   const [inputType, setInputType] = useState("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,9 +20,9 @@ const Login = ({ onAlert }) => {
         return;
       }
 
-      //?snackbar here as well?
-      console.log("Logged in:", data.user);
-      onAlert(`Logged in: ${data.user.id}`, false);
+      // console.log("Logged in:", data.user);
+      onLoggedOnUser(data.user);
+      onAlert(`Logged in: ${data.user.email}`, false);
     } catch (err) {
       onAlert(`Error: ${err.message}`, true);
     }
@@ -53,7 +53,6 @@ const Login = ({ onAlert }) => {
           </div>
         </div>
         <div>
-          <div>{message}</div>
           <button type="button" disabled={email.length === 0 || password.length === 0} onClick={handleLogin}>
             Login
           </button>

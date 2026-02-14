@@ -6,19 +6,29 @@
 
 .container > div {
   list-style: none;
-  width: 40%;
+  max-width: 1000px;
   margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .container > div > a {
   padding: 0.5rem 1rem;
   text-decoration: none;
   color: black;
+  flex-basis: 1;
 }
 
 .container > div > a.active {
   background-color: cornsilk;
+}
+
+.container > div > button {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
 }
