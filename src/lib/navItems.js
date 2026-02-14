@@ -1,7 +1,6 @@
 const navItems = [
-  { name: "Home", param: "/tweeter-react-project/" },
+  { name: "Home", param: "/" },
   { name: "Profile", param: "/profile" },
-  { name: "Login", param: "/login" },
 ];
 
 export default navItems;
