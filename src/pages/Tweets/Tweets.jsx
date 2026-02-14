@@ -45,7 +45,7 @@ const Tweets = ({ userName, onAlert }) => {
         .from("tweets")
         .insert([
           {
-            user_name: userName,
+            userName: userName,
             content: tweetText,
             date: getCurrentISODate(),
           },
