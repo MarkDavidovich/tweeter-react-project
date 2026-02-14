@@ -18,6 +18,12 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!loggedOnUser) {
+      navigate("/login");
+    }
+  }, [loggedOnUser]);
+
+  useEffect(() => {
     saveToLocalStorage(userName);
   }, [userName]);
 
@@ -72,6 +78,7 @@ function App() {
         <Route path="/" element={<Tweets userName={userName} onAlert={handleAlert} />} />
         <Route path="/profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
         <Route path="/login" element={<Login onAlert={handleAlert} onLoggedOnUser={handleLoggedOnUser} />} />
+        <Route path="*" element={<Tweets userName={userName} onAlert={handleAlert} />} />
       </Routes>
       {alert && <Popup message={alert.message} isError={alert.isError} />}
     </>
