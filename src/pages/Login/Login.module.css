@@ -33,6 +33,10 @@
   padding: 0.5rem;
 }
 
+.container > div > div:last-of-type > button:disabled {
+  cursor: default;
+}
+
 .container > div > div > input,
 .password > input,
 .password > button {
@@ -56,6 +60,13 @@
 
 .password > button {
   color: cornsilk;
-  border: none;
   cursor: pointer;
+  border-bottom: none;
+  border-top: 2px cornsilk solid;
+  border-inline: 2px cornsilk solid;
+  padding-inline: 0.5rem;
+}
+
+.password > button:disabled {
+  cursor: default;
 }

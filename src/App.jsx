@@ -51,9 +51,9 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/tweeter-react-project/" element={<Tweets userName={userName} onAlert={handleAlert} />} />
+        <Route path="/" element={<Tweets userName={userName} onAlert={handleAlert} />} />
         <Route path="/profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onAlert={handleAlert} />} />
       </Routes>
       {alert && <Popup message={alert.message} isError={alert.isError} />}
     </>
