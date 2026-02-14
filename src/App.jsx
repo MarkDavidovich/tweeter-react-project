@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 import { useEffect, useState, useRef } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Tweets from "./pages/Tweets/Tweets";
@@ -15,6 +15,7 @@ function App() {
   const [loggedOnUser, setLoggedOnUser] = useState(null);
 
   const timeoutRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     saveToLocalStorage(userName);
@@ -53,8 +54,7 @@ function App() {
     try {
       await supabase.auth.signOut();
       setLoggedOnUser(null);
-
-      console.log(`logged out!`);
+      navigate("/login");
       setAlert({ message: `Logged out successfully!`, isError: false });
     } catch (err) {
       setAlert({ message: `Failed to log out! ${err.message}`, isError: true });

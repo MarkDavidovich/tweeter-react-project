@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 import style from "./Login.module.css";
+import { useNavigate } from "react-router";
 
 const Login = ({ onAlert, onLoggedOnUser }) => {
   const [inputType, setInputType] = useState("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -23,6 +26,7 @@ const Login = ({ onAlert, onLoggedOnUser }) => {
       // console.log("Logged in:", data.user);
       onLoggedOnUser(data.user);
       onAlert(`Logged in: ${data.user.email}`, false);
+      navigate("/");
     } catch (err) {
       onAlert(`Error: ${err.message}`, true);
     }
