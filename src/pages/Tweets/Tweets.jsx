@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
 import { getCurrentISODate } from "../../lib/utils";

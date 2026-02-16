@@ -7,6 +7,7 @@ const Profile = ({ userName, onUserNameChange }) => {
 
   const { handleAlert } = useAlerts();
 
+  //! change the logic here accept and change the username/email of the user
   return (
     <div className={style.container}>
       <div>

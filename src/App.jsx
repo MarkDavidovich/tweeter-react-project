@@ -1,10 +1,9 @@
 import { Routes, Route } from "react-router";
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Tweets from "./pages/Tweets/Tweets";
 import Profile from "./pages/Profile/Profile";
-import Popup from "./components/Popup/Popup";
-import { saveToLocalStorage, loadFromLocalStorage } from "./lib/storage";
+import { loadFromLocalStorage } from "./lib/storage";
 import Login from "./pages/Login/Login";
 import AuthProvider from "./auth/AuthProvider";
 import { AlertsProvider } from "./store/alerts-context";
