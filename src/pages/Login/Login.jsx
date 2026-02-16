@@ -23,7 +23,6 @@ const Login = ({ onAlert, onLoggedOnUser }) => {
         return;
       }
 
-      // console.log("Logged in:", data.user);
       onLoggedOnUser(data.user);
       onAlert(`Logged in: ${data.user.email}`, false);
       navigate("/");
