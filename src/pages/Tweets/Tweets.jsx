@@ -5,7 +5,7 @@ import { getCurrentISODate } from "../../lib/utils";
 import { TweetsContext } from "../../store/tweets-context";
 import { supabase } from "../../lib/supabase";
 import style from "./Tweets.module.css";
-import { AlertsContext } from "../../store/alerts-context";
+import { useAlerts } from "../../store/alerts-context";
 
 const Tweets = ({ userName }) => {
   //username should be extracted from the backend
@@ -13,7 +13,7 @@ const Tweets = ({ userName }) => {
   const [isFetching, setIsFetching] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
-  const { handleAlert } = useContext(AlertsContext);
+  const { handleAlert } = useAlerts();
 
   useEffect(() => {
     const fetchTweets = async () => {

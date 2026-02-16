@@ -1,9 +1,6 @@
-import { useContext, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { useState } from "react";
 import style from "./Login.module.css";
-import { useNavigate } from "react-router";
 import { useAuth } from "../../auth/AuthProvider";
-import { AlertsContext } from "../../store/alerts-context";
 
 const Login = () => {
   const [inputType, setInputType] = useState("password");

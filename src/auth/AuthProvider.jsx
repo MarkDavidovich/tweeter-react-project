@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { loadFromLocalStorage, saveToLocalStorage } from "../lib/storage";
 import { supabase } from "../lib/supabase";
-import { AlertsContext } from "../store/alerts-context";
+import { useAlerts } from "../store/alerts-context";
 
 const AuthContext = createContext(null);
 
@@ -10,7 +10,7 @@ export default function AuthProvider({ children }) {
   const [loggedOnUser, setLoggedOnUser] = useState(loadFromLocalStorage() || null);
 
   const navigate = useNavigate();
-  const { handleAlert } = useContext(AlertsContext);
+  const { handleAlert } = useAlerts();
 
   useEffect(() => {
     saveToLocalStorage(loggedOnUser);
@@ -42,10 +42,10 @@ export default function AuthProvider({ children }) {
       await supabase.auth.signOut();
       setLoggedOnUser(null);
       navigate("/login");
-      handleAlert({ message: `Logged out successfully!`, isError: false });
+      handleAlert(`Logged out successfully!`, false);
       console.log(`successfully logged out!`);
     } catch (err) {
-      handleAlert({ message: `Failed to log out! ${err.message}`, isError: true });
+      handleAlert(`Failed to log out! ${err.message}`, true);
     }
   };
 
