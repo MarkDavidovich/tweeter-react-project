@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import style from "./Profile.module.css";
+import { AlertsContext } from "../../store/alerts-context";
 
 const Profile = ({ userName, onUserNameChange }) => {
   const [newUserName, setNewUserName] = useState(userName);
+
+  const { handleAlert } = useContext(AlertsContext);
 
   return (
     <div className={style.container}>

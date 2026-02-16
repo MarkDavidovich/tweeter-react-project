@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TweetList from "../../components/TweetList/TweetList";
 import TweetMaker from "../../components/TweetMaker/TweetMaker";
 import { getCurrentISODate } from "../../lib/utils";
 import { TweetsContext } from "../../store/tweets-context";
 import { supabase } from "../../lib/supabase";
 import style from "./Tweets.module.css";
+import { AlertsContext } from "../../store/alerts-context";
 
-const Tweets = ({ userName, onAlert }) => {
+const Tweets = ({ userName }) => {
+  //username should be extracted from the backend
   const [tweets, setTweets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
+
+  const { handleAlert } = useContext(AlertsContext);
 
   useEffect(() => {
     const fetchTweets = async () => {
@@ -19,13 +23,13 @@ const Tweets = ({ userName, onAlert }) => {
         const { data, error } = await supabase.from("tweets").select("*");
 
         if (error) {
-          onAlert(`Failed to load Tweets! ${error.message}`, true);
+          handleAlert(`Failed to load Tweets! ${error.message}`, true);
           return;
         }
 
         setTweets(data);
       } catch (err) {
-        onAlert(`Error: ${err.message}`, true);
+        handleAlert(`Error: ${err.message}`, true);
       } finally {
         setIsFetching(false);
       }
@@ -53,14 +57,14 @@ const Tweets = ({ userName, onAlert }) => {
         .select();
 
       if (error) {
-        onAlert(`Failed to load Tweets! ${error.message}`, true);
+        handleAlert(`Failed to load Tweets! ${error.message}`, true);
         return;
       }
 
       setTweets((prevTweets) => [data[0], ...prevTweets]);
-      onAlert(`Tweet posted!`, false);
+      handleAlert(`Tweet posted!`, false);
     } catch (err) {
-      onAlert(`Error: ${err.message}`, true);
+      handleAlert(`Error: ${err.message}`, true);
     } finally {
       setIsPosting(false);
     }
@@ -72,7 +76,7 @@ const Tweets = ({ userName, onAlert }) => {
   };
 
   return (
-    <TweetsContext.Provider value={ctxValue}>
+    <TweetsContext value={ctxValue}>
       <div className={style.container}>
         <TweetMaker loading={isPosting} />
         {isFetching && tweets.length === 0 ? (
@@ -83,7 +87,7 @@ const Tweets = ({ userName, onAlert }) => {
           <TweetList />
         )}
       </div>
-    </TweetsContext.Provider>
+    </TweetsContext>
   );
 };
 

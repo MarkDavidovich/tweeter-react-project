@@ -1,35 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import style from "./Login.module.css";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../auth/AuthProvider";
+import { AlertsContext } from "../../store/alerts-context";
 
-const Login = ({ onAlert, onLoggedOnUser }) => {
+const Login = () => {
   const [inputType, setInputType] = useState("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
 
-  const navigate = useNavigate();
-
-  const handleLogin = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        onAlert(`Failed to login! ${error.message}`, true);
-        return;
-      }
-
-      onLoggedOnUser(data.user);
-      onAlert(`Logged in: ${data.user.email}`, false);
-      navigate("/");
-    } catch (err) {
-      onAlert(`Error: ${err.message}`, true);
-    }
-  };
+  const { handleLogin } = useAuth();
 
   const handleInputType = () => {
     if (inputType === "password") {
@@ -56,7 +37,13 @@ const Login = ({ onAlert, onLoggedOnUser }) => {
           </div>
         </div>
         <div>
-          <button type="button" disabled={email.length === 0 || password.length === 0} onClick={handleLogin}>
+          <button
+            type="button"
+            disabled={email.length === 0 || password.length === 0}
+            onClick={() => {
+              handleLogin(email, password);
+            }}
+          >
             Login
           </button>
         </div>

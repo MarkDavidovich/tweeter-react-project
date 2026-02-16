@@ -2,12 +2,15 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { loadFromLocalStorage, saveToLocalStorage } from "../lib/storage";
 import { supabase } from "../lib/supabase";
+import { AlertsContext } from "../store/alerts-context";
 
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
   const [loggedOnUser, setLoggedOnUser] = useState(loadFromLocalStorage() || null);
+
   const navigate = useNavigate();
+  const { handleAlert } = useContext(AlertsContext);
 
   useEffect(() => {
     saveToLocalStorage(loggedOnUser);
@@ -21,16 +24,16 @@ export default function AuthProvider({ children }) {
       });
 
       if (error) {
-        onAlert(`Failed to login! ${error.message}`, true);
+        handleAlert(`Failed to login! ${error.message}`, true);
         return;
       }
 
       setLoggedOnUser(data.user);
-      //!  onAlert(`Logged in: ${data.user.email}`, false);
+      handleAlert(`Logged in: ${data.user.email}`, false);
       console.log(`logged in: ${data.user.email}`);
       navigate("/");
     } catch (err) {
-      //!   onAlert(`Error: ${err.message}`, true);
+      handleAlert(`Error: ${err.message}`, true);
     }
   };
 
@@ -39,15 +42,15 @@ export default function AuthProvider({ children }) {
       await supabase.auth.signOut();
       setLoggedOnUser(null);
       navigate("/login");
-      //!   setAlert({ message: `Logged out successfully!`, isError: false });
+      handleAlert({ message: `Logged out successfully!`, isError: false });
       console.log(`successfully logged out!`);
     } catch (err) {
-      //!   setAlert({ message: `Failed to log out! ${err.message}`, isError: true });
+      handleAlert({ message: `Failed to log out! ${err.message}`, isError: true });
     }
   };
 
   const userCtx = {
-    activeUser: loggedOnUser,
+    loggedOnUser,
     handleLogin,
     handleLogout,
   };
