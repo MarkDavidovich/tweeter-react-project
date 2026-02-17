@@ -1,20 +1,31 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { loadFromLocalStorage, saveToLocalStorage } from "../lib/storage";
 import { supabase } from "../lib/supabase";
 import { useAlerts } from "../store/alerts-context";
 
 const AuthContext = createContext(null);
 
-export default function AuthProvider({ children }) {
-  const [loggedOnUser, setLoggedOnUser] = useState(loadFromLocalStorage() || null);
+export function AuthProvider({ onAuthReady, children }) {
+  const [loggedOnUser, setLoggedOnUser] = useState(null);
 
   const navigate = useNavigate();
   const { handleAlert } = useAlerts();
 
   useEffect(() => {
-    saveToLocalStorage(loggedOnUser);
-  }, [loggedOnUser]);
+    const fetchActiveUser = async () => {
+      try {
+        const { data } = await supabase.auth.getUser();
+        setLoggedOnUser(data.user);
+        console.log(loggedOnUser);
+      } catch (err) {
+        handleAlert(`Error: ${err.message}`, true);
+      } finally {
+        onAuthReady();
+      }
+    };
+
+    fetchActiveUser();
+  }, []);
 
   const handleLogin = async (email, password) => {
     try {
@@ -29,8 +40,7 @@ export default function AuthProvider({ children }) {
       }
 
       setLoggedOnUser(data.user);
-      handleAlert(`Logged in: ${data.user.email}`, false);
-      console.log(`logged in: ${data.user.email}`);
+      handleAlert(`Logged in: ${data.user.email}`);
       navigate("/");
     } catch (err) {
       handleAlert(`Error: ${err.message}`, true);
@@ -42,10 +52,24 @@ export default function AuthProvider({ children }) {
       await supabase.auth.signOut();
       setLoggedOnUser(null);
       navigate("/login");
-      handleAlert(`Logged out successfully!`, false);
+      handleAlert(`Logged out successfully!`);
       console.log(`successfully logged out!`);
     } catch (err) {
       handleAlert(`Failed to log out! ${err.message}`, true);
+    }
+  };
+
+  const handleUserNameChange = async (newUserName) => {
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          display_name: newUserName,
+        },
+      });
+
+      handleAlert(`User display name changed!`);
+    } catch (err) {
+      handleAlert(`Error: ${err.message}`, true);
     }
   };
 
@@ -53,6 +77,7 @@ export default function AuthProvider({ children }) {
     loggedOnUser,
     handleLogin,
     handleLogout,
+    handleUserNameChange,
   };
 
   return <AuthContext value={userCtx}>{children}</AuthContext>;
