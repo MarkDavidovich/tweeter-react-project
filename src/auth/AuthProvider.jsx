@@ -16,7 +16,6 @@ export function AuthProvider({ onAuthReady, children }) {
       try {
         const { data } = await supabase.auth.getUser();
         setLoggedOnUser(data.user);
-        console.log(loggedOnUser);
       } catch (err) {
         handleAlert(`Error: ${err.message}`, true);
       } finally {
@@ -53,7 +52,6 @@ export function AuthProvider({ onAuthReady, children }) {
       setLoggedOnUser(null);
       navigate("/login");
       handleAlert(`Logged out successfully!`);
-      console.log(`successfully logged out!`);
     } catch (err) {
       handleAlert(`Failed to log out! ${err.message}`, true);
     }
@@ -67,6 +65,11 @@ export function AuthProvider({ onAuthReady, children }) {
         },
       });
 
+      if (error) {
+        handleAlert(`Could not change user name! ${error}`);
+        return;
+      }
+      setLoggedOnUser(data.user);
       handleAlert(`User display name changed!`);
     } catch (err) {
       handleAlert(`Error: ${err.message}`, true);

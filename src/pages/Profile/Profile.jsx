@@ -1,13 +1,20 @@
 import { useState } from "react";
-import style from "./Profile.module.css";
 import { useAlerts } from "../../store/alerts-context";
+import { useAuth } from "../../auth/AuthProvider";
+import style from "./Profile.module.css";
 
-const Profile = ({ userName, onUserNameChange }) => {
-  const [newUserName, setNewUserName] = useState(userName);
-
+const Profile = () => {
+  const { loggedOnUser, handleUserNameChange } = useAuth();
   const { handleAlert } = useAlerts();
 
-  //! change the logic here accept and change the username/email of the user
+  let currentName = loggedOnUser.user_metadata.display_name || loggedOnUser.email.split("@")[0];
+
+  const [newUserName, setNewUserName] = useState(currentName);
+
+  if (!currentName) {
+    currentName = loggedOnUser.email.split("@")[0];
+  }
+
   return (
     <div className={style.container}>
       <div>
@@ -22,9 +29,9 @@ const Profile = ({ userName, onUserNameChange }) => {
           }}
         />
         <button
-          disabled={userName === newUserName || newUserName.length === 0}
+          disabled={newUserName.length === 0 || currentName === newUserName}
           onClick={() => {
-            onUserNameChange(newUserName);
+            handleUserNameChange(newUserName);
           }}
         >
           Save

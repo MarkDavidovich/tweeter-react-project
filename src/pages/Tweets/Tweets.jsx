@@ -4,16 +4,17 @@ import TweetMaker from "../../components/TweetMaker/TweetMaker";
 import { getCurrentISODate } from "../../lib/utils";
 import { TweetsContext } from "../../store/tweets-context";
 import { supabase } from "../../lib/supabase";
-import style from "./Tweets.module.css";
 import { useAlerts } from "../../store/alerts-context";
+import { useAuth } from "../../auth/AuthProvider";
+import style from "./Tweets.module.css";
 
-const Tweets = ({ userName }) => {
-  //username should be extracted from the backend
+const Tweets = () => {
   const [tweets, setTweets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
   const { handleAlert } = useAlerts();
+  const { loggedOnUser } = useAuth();
 
   useEffect(() => {
     const fetchTweets = async () => {
@@ -49,7 +50,7 @@ const Tweets = ({ userName }) => {
         .from("tweets")
         .insert([
           {
-            userName: userName,
+            userName: loggedOnUser.user_metadata.display_name || loggedOnUser.email.split("@")[0],
             content: tweetText,
             date: getCurrentISODate(),
           },
