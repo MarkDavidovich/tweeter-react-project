@@ -1,0 +1,73 @@
+.container {
+  max-width: 1000px;
+  margin-inline: auto;
+  padding-inline: 0.5rem;
+  margin-top: 2rem;
+}
+
+.container > div {
+  background-color: powderblue;
+  padding: 0.5rem 1rem;
+}
+
+.container > div > div {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+}
+
+.container > div > div:last-of-type {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container > div > div:last-of-type > div > a {
+  cursor: pointer;
+  color: cornsilk;
+}
+
+.container > div > div:last-of-type > button {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  place-self: flex-end;
+}
+
+.container > div > div:last-of-type > button:disabled {
+  cursor: default;
+}
+
+.container > div > div > input,
+.password > input,
+.password > button {
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid cornsilk;
+  font-size: 1.2rem;
+}
+
+.password {
+  display: flex;
+  border-bottom: 2px solid cornsilk;
+}
+
+.password > input {
+  border: none;
+  width: 100%;
+}
+
+.password > button {
+  color: cornsilk;
+  cursor: pointer;
+  border-bottom: none;
+  border-top: 2px cornsilk solid;
+  border-inline: 2px cornsilk solid;
+  padding-inline: 0.5rem;
+}
+
+.password > button:disabled {
+  cursor: default;
+}

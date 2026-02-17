@@ -46,6 +46,28 @@ export function AuthProvider({ onAuthReady, children }) {
     }
   };
 
+  const handleRegister = async (email, password) => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: cleanEmail,
+        password,
+      });
+
+      if (error) {
+        handleAlert(`Failed to register! ${error.message}`, true);
+        return;
+      }
+
+      handleAlert(`Registration successful!`);
+      setLoggedOnUser(data.user);
+      navigate("/");
+    } catch (err) {
+      handleAlert(`Error: ${err.message}`);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
@@ -79,6 +101,7 @@ export function AuthProvider({ onAuthReady, children }) {
   const userCtx = {
     loggedOnUser,
     handleLogin,
+    handleRegister,
     handleLogout,
     handleUserNameChange,
   };

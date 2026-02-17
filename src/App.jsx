@@ -8,6 +8,7 @@ import { AlertsProvider } from "./store/alerts-context";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { useState } from "react";
 import "./App.css";
+import Register from "./pages/Register/Register";
 
 function App() {
   const [authReady, setAuthReady] = useState(null);
@@ -40,6 +41,7 @@ function App() {
                 }
               />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
           )}
         </AuthProvider>

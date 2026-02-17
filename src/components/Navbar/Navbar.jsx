@@ -18,9 +18,14 @@ const Navbar = () => {
         {loggedOnUser ? (
           <button onClick={handleLogout}>Logout</button>
         ) : (
-          <NavLink className={({ isActive }) => `${isActive && style.active}`} to="/login">
-            Login
-          </NavLink>
+          <>
+            <NavLink className={({ isActive }) => `${isActive && style.active}`} to="/login">
+              Login
+            </NavLink>
+            <NavLink className={({ isActive }) => `${isActive && style.active}`} to="/register">
+              Register
+            </NavLink>
+          </>
         )}
       </div>
     </nav>
