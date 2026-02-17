@@ -8,13 +8,14 @@ import Login from "./pages/Login/Login";
 import AuthProvider from "./auth/AuthProvider";
 import { AlertsProvider } from "./store/alerts-context";
 import "./App.css";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 function App() {
-  const [userName, setUserName] = useState(loadFromLocalStorage() || "fullstack_mark");
+  // const [userName, setUserName] = useState(loadFromLocalStorage() || "fullstack_mark");
 
-  const handleUserNameChange = (newUserName) => {
-    setUserName(newUserName);
-  };
+  // const handleUserNameChange = (newUserName) => {
+  //   setUserName(newUserName);
+  // };
 
   return (
     <>
@@ -22,10 +23,23 @@ function App() {
         <AuthProvider>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Tweets userName={userName} />} />
-            <Route path="/profile" element={<Profile userName={userName} onUserNameChange={handleUserNameChange} />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Tweets userName={userName} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile userName={userName} onUserNameChange={handleUserNameChange} />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
-            <Route path="*" element={<Tweets userName={userName} />} />
           </Routes>
         </AuthProvider>
       </AlertsProvider>

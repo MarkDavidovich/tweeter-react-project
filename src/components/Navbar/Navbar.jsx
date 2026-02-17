@@ -9,11 +9,12 @@ const Navbar = () => {
   return (
     <nav className={style.container}>
       <div>
-        {navItems.map((navItem) => (
-          <NavLink key={navItem.name} className={({ isActive }) => `${isActive && style.active}`} to={navItem.param}>
-            {navItem.name}
-          </NavLink>
-        ))}
+        {loggedOnUser &&
+          navItems.map((navItem) => (
+            <NavLink key={navItem.name} className={({ isActive }) => `${isActive && style.active}`} to={navItem.param}>
+              {navItem.name}
+            </NavLink>
+          ))}
         {loggedOnUser ? (
           <button onClick={handleLogout}>Logout</button>
         ) : (
